@@ -12,6 +12,7 @@ class Network:
     
     #constructor for the class
     def __init__(self):
+        self._json = None
         self.layers = []
         self.loss = None
         self.loss_prime = None
@@ -97,4 +98,9 @@ class Network:
                 if(isinstance(layer, ForwardLayer)):
                     layer.weights = np.array(file[i]['weights'])
                     i += 1
-      
+
+    # load the json file with the data for the AI
+    def loadJson(self, fileName):
+
+        with open (fileName, 'r') as file:
+            self._json = json.load(file)

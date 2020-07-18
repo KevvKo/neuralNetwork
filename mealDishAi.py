@@ -40,7 +40,7 @@ class MealDishAi(Network):
         js.append({'intents': intents})
         
         # create the decoded json with recipes
-        with open('src/recipes,json', 'w') as file:
+        with open('src/recipes.json', 'w') as file:
             json.dump(js, file, indent=4)
 
 #######################################################################################
@@ -48,4 +48,5 @@ class MealDishAi(Network):
 if __name__ == "__main__":
 
     bot = MealDishAi()
-    bot.recipesDecoder()
+    
+    bot.loadJson('src/recipes.json')
