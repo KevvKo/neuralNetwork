@@ -5,6 +5,8 @@ import nltk
 import numpy as np 
 import pickle
 
+from nltk.stem import WordNetLemmatizer
+
 nltk.download('punkt')
 nltk.download('wordnet')
 
@@ -14,7 +16,15 @@ lemmatizer = WordNetLemmatizer()
 class MealDishAi(Network):
 
     def __init__(self):
-        pass
+        '''TO DO's:
+            define object properties (words, intents, classes,...)
+            - function createAlphabet
+            - function prediction
+            - function decodeJsonFile
+            - trainModel
+        '''
+        #self._intents = []
+        #self.words = pickle.load(open('src/words.pkl', 'rb'))
 
     #creating a reusable json-file with recipes and further properties
     def createRecipesFile(self):
@@ -53,12 +63,39 @@ class MealDishAi(Network):
     def decodeJSonFile(self):
         pass
 
-    def buildAlphabet(self):
+    #creating an unique alphabet with words, which are containted in the dataset
+    def creatingAlphabet(self):
         words = []
-#######################################################################################
+        classes = []
+        ignoreWords = ['?', '!']
+
+        with open('src/recipes.json', 'r') as file:
+            dataFile = json.load(file)
+
+        for intent in dataFile['intents']:
+            for recipe in intent:
+                w = nltk.word_tokenize(recipe)
+                words.extend(w)
+
+        lemmatizer = WordNetLemmatizer()
+        words = [lemmatizer.lemmatize(w.lower()) for w in words if w not in ignoreWords]
+
+        sorted(list(set(words)))
+        pickle.dump(words,open('src/words.pkl','wb'))
+
+    #make a prediction and return the computed match
+    def prediction(self):
+        pass
+    
+    #train the model and save the result
+    def trainModel(self):
+        pass
+
+###################################################################################################################
 
 if __name__ == "__main__":
 
     bot = MealDishAi()
-    bot.createRecipesFile()
+    #bot.createRecipesFile()
     bot.loadJson('src/recipes.json')
+    bot.creatingAlphabet()
