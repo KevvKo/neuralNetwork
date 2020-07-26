@@ -1,18 +1,26 @@
 from network import Network
 import json
 import sys
+import nltk
+import numpy as np 
+import pickle
+
+nltk.download('punkt')
+nltk.download('wordnet')
+
+from nltk.stem import WordNetLemmatizer
+lemmatizer = WordNetLemmatizer()
 
 class MealDishAi(Network):
 
     def __init__(self):
         pass
 
-    #decodes the available json with receipes and ingredients
-    def recipesDecoder(self):
+    #creating a reusable json-file with recipes and further properties
+    def createRecipesFile(self):
         with open ('src/chefkoch.json', 'r') as file:
             data = json.load(file)
         
-        js = []
         intents = []
         
         # loop through the rawdata and put the ingredionts and instructions for every meal and 
@@ -36,17 +44,21 @@ class MealDishAi(Network):
             intents.append(
                 {mealName: jsline}
             )
-
-        js.append({'intents': intents})
         
         # create the decoded json with recipes
         with open('src/recipes.json', 'w') as file:
-            json.dump(js, file, indent=4)
+            json.dump({'intents': intents}, file, indent=4)
 
+    #decodes the json file(recips.json) and creating wordbags for the AI
+    def decodeJSonFile(self):
+        pass
+
+    def buildAlphabet(self):
+        words = []
 #######################################################################################
 
 if __name__ == "__main__":
 
     bot = MealDishAi()
-    
+    bot.createRecipesFile()
     bot.loadJson('src/recipes.json')

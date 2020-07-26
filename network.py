@@ -1,6 +1,5 @@
 import numpy as np
 import math
-import h5py
 import json
 
 from forwardLayer import ForwardLayer
