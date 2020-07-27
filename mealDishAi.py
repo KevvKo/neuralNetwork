@@ -16,13 +16,7 @@ lemmatizer = WordNetLemmatizer()
 class MealDishAi(Network):
 
     def __init__(self):
-        '''TO DO's:
-            define object properties (words, intents, classes,...)
-            - function createAlphabet
-            - function prediction
-            - function decodeJsonFile
-            - trainModel
-        '''
+
         self._intents = json.loads(open('src/recipes.json').read())
         self._words = pickle.load(open('src/words.pkl', 'rb'))
         self._classes = pickle.load(open('src/classes.pkl', 'rb'))
@@ -61,9 +55,6 @@ class MealDishAi(Network):
         with open('src/recipes.json', 'w') as file:
             json.dump({'intents': intents}, file, indent=4)
 
-    #decodes the json file(recips.json) and creating wordbags for the AI
-    def decodeJSonFile(self):
-        pass
 
     #creating an unique alphabet with words, which are containted in the dataset and
     #further a sorted list of all classes
@@ -75,6 +66,7 @@ class MealDishAi(Network):
         with open('src/recipes.json', 'r') as file:
             dataFile = json.load(file)
 
+        #loop through the dataset and creating all necessary lists
         for intent in dataFile['intents']:
             for recipe in intent:
                 w = nltk.word_tokenize(recipe)
@@ -93,12 +85,25 @@ class MealDishAi(Network):
         sorted(list(set(classes)))
         pickle.dump(classes, open('src/classes.pkl', 'wb'))
         
-    #make a prediction and return the computed match
-    def prediction(self):
+    #creating bag of words
+    wordbag(self):
         pass
     
     #train the model and save the result
     def trainModel(self):
+        pass
+    
+    #make a prediction and return the computed match
+    def prediction(self):
+        pass
+
+    def getResponse(self):
+        pass
+
+    def cleanUpSentence(self):
+        pass
+    
+    def run(self):
         pass
 
 ###################################################################################################################
