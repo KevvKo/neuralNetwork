@@ -23,8 +23,10 @@ class MealDishAi(Network):
             - function decodeJsonFile
             - trainModel
         '''
-        #self._intents = []
-        #self.words = pickle.load(open('src/words.pkl', 'rb'))
+        self._intents = json.loads(open('src/recipes.json').read())
+        self._words = pickle.load(open('src/words.pkl', 'rb'))
+        self._classes = pickle.load(open('src/classes.pkl', 'rb'))
+
 
     #creating a reusable json-file with recipes and further properties
     def createRecipesFile(self):
@@ -63,7 +65,8 @@ class MealDishAi(Network):
     def decodeJSonFile(self):
         pass
 
-    #creating an unique alphabet with words, which are containted in the dataset
+    #creating an unique alphabet with words, which are containted in the dataset and
+    #further a sorted list of all classes
     def creatingAlphabet(self):
         words = []
         classes = []
@@ -77,12 +80,19 @@ class MealDishAi(Network):
                 w = nltk.word_tokenize(recipe)
                 words.extend(w)
 
+                if recipe not in classes: classes.append(recipe)
+
         lemmatizer = WordNetLemmatizer()
         words = [lemmatizer.lemmatize(w.lower()) for w in words if w not in ignoreWords]
 
+        #save the sorted list of unique words in a binary file (pickle) to archive them
         sorted(list(set(words)))
         pickle.dump(words,open('src/words.pkl','wb'))
 
+        #save the classes as a sorted list in a pkl-file
+        sorted(list(set(classes)))
+        pickle.dump(classes, open('src/classes.pkl', 'wb'))
+        
     #make a prediction and return the computed match
     def prediction(self):
         pass
