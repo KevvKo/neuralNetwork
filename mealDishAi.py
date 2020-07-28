@@ -20,6 +20,7 @@ class MealDishAi(Network):
         self._intents = json.loads(open('src/recipes.json').read())
         self._words = pickle.load(open('src/words.pkl', 'rb'))
         self._classes = pickle.load(open('src/classes.pkl', 'rb'))
+        self._documents = pickle.load(open('src/documents.pkl', 'rb'))
 
 
     #creating a reusable json-file with recipes and further properties
@@ -58,9 +59,10 @@ class MealDishAi(Network):
 
     #creating an unique alphabet with words, which are containted in the dataset and
     #further a sorted list of all classes
-    def creatingAlphabet(self):
+    def creatingSetsForAI(self):
         words = []
         classes = []
+        documents = []
         ignoreWords = ['?', '!']
 
         with open('src/recipes.json', 'r') as file:
@@ -71,6 +73,8 @@ class MealDishAi(Network):
             for recipe in intent:
                 w = nltk.word_tokenize(recipe)
                 words.extend(w)
+
+                documents.append((recipe, w))
 
                 if recipe not in classes: classes.append(recipe)
 
@@ -84,25 +88,65 @@ class MealDishAi(Network):
         #save the classes as a sorted list in a pkl-file
         sorted(list(set(classes)))
         pickle.dump(classes, open('src/classes.pkl', 'wb'))
-        
+
+        #save the documents in a pickle-file
+        pickle.dump(documents, open('src/documents.pkl', 'wb'))
+
+
     #creating bag of words
-    wordbag(self):
-        pass
-    
+    def getWordbag(self, document, words):
+            
+            # initializing bag of words
+            bag = []
+
+            # list of tokenized words for the pattern
+            patternWords = document[1]
+
+            # lemmatize each word - create base word, in attempt to represent related words
+            patternWords = [lemmatizer.lemmatize(word.lower()) for word in patternWords]
+
+            # create our bag of words array with 1, if word match found in current pattern
+            for w in words:
+                bag.append(1) if w in patternWords else bag.append(0)
+
+            return bag
+
+
     #train the model and save the result
     def trainModel(self):
-        pass
+
+        words = self._words
+        classes = self._classes
+        documents = self._documents
+        
+        #initialize the training data
+        training = []
+        outputEmpty = [0] * len(self._classes)
     
+        for doc in documents:
+            bag = self.getWordbag(doc, words)
+            
+            # output is a '0' for each tag and '1' for current tag (for each pattern) .> 
+            outputRow = list(outputEmpty)
+            outputRow[classes.index(doc[1])] = 1
+
+            training.append([bag, outputRow])
+            print(outputRow)
+    
+
     #make a prediction and return the computed match
     def prediction(self):
         pass
 
+
     def getResponse(self):
         pass
+
 
     def cleanUpSentence(self):
         pass
     
+
     def run(self):
         pass
 
@@ -111,6 +155,6 @@ class MealDishAi(Network):
 if __name__ == "__main__":
 
     bot = MealDishAi()
-    #bot.createRecipesFile()
     bot.loadJson('src/recipes.json')
-    bot.creatingAlphabet()
+    bot.creatingSetsForAI()
+    bot.trainModel()

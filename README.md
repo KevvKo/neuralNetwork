@@ -1,5 +1,11 @@
 # Neural Network
 Just in development.
+## Table of Contents
+[Requirements](#requirements)
+[Getting Started](#getting-started)
+[Description](#description)
+[Usages](#usages)
+[Examples](#examples)
 ## Requirements
 ### Technically
     - Python3++
@@ -10,7 +16,7 @@ Just in development.
 - pickle
 
 ## Getting Started
-## Descriptipon
+## Description
 ## Usages
 ### AI for recipes 
 This AI using the neural network to find for a given recipe the ingredients and the preparation. 
