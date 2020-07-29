@@ -44,6 +44,7 @@ class Network:
 
     # train the network
     def fit(self, x_train, y_train, epochs, learning_rate):
+        
         # sample dimension first
         samples = len(x_train)
 

@@ -12,6 +12,7 @@ Just in development.
 
 ### Modules
 - numpy
+- pandas
 - nltk
 - pickle
 

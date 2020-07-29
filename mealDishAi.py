@@ -1,6 +1,7 @@
 from network import Network
 import json
 import sys
+import random
 import nltk
 import numpy as np 
 import pickle
@@ -13,10 +14,16 @@ nltk.download('wordnet')
 from nltk.stem import WordNetLemmatizer
 lemmatizer = WordNetLemmatizer()
 
+from forwardLayer import ForwardLayer
+from activationFunctions import tanh, tanh_prime
+from losses import mse, mse_prime 
+from activationLayer import ActivationLayer
+
 class MealDishAi(Network):
 
     def __init__(self):
 
+        self._net = Network()
         self._intents = json.loads(open('src/recipes.json').read())
         self._words = pickle.load(open('src/words.pkl', 'rb'))
         self._classes = pickle.load(open('src/classes.pkl', 'rb'))
@@ -128,11 +135,33 @@ class MealDishAi(Network):
             
             # output is a '0' for each tag and '1' for current tag (for each pattern) .> 
             outputRow = list(outputEmpty)
-            outputRow[classes.index(doc[1])] = 1
+        
+            outputRow[classes.index(doc[0])] = 1
 
-            training.append([bag, outputRow])
-            print(outputRow)
-    
+
+            training.append([outputRow, bag])
+
+        #shuffling the features and turn into a numpy array
+        random.shuffle(training)
+        training = np.array(training)
+
+        #create training and tests-lists -> x: pattern (recipe words), y: intent (entire recipe string)
+        trainingX = training[:,1]
+        trainingY = training[:,0]
+
+        self._net.addLayer(ForwardLayer(1, 128))
+        self._net.addLayer(ActivationLayer(tanh, tanh_prime))
+        self._net.addLayer(ForwardLayer(126, 256))
+        self._net.addLayer(ActivationLayer(tanh, tanh_prime))
+        self._net.addLayer(ForwardLayer(256, 1))
+        self._net.addLayer(ActivationLayer(tanh, tanh_prime))
+
+        #self._net.load('modelState.json')
+
+        # train
+        self._net.useLoss(mse, mse_prime)
+        self._net.fit(trainingX, trainingY, epochs=1000, learning_rate=0.1)
+
 
     #make a prediction and return the computed match
     def prediction(self):
@@ -156,5 +185,5 @@ if __name__ == "__main__":
 
     bot = MealDishAi()
     bot.loadJson('src/recipes.json')
-    bot.creatingSetsForAI()
+    #bot.creatingSetsForAI()
     bot.trainModel()
