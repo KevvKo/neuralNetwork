@@ -2,9 +2,12 @@
 Just in development.
 ## Table of Contents
 [Requirements](#requirements)
+
 [Description](#description)
+
 [Getting Started](#getting-started)
-[Description](#description)
+
+[Coming soon](#coming-soon)
 ## Requirements
 ### Technically
     - Python3++
