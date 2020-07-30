@@ -2,31 +2,40 @@
 Just in development.
 ## Table of Contents
 [Requirements](#requirements)
+[Description](#description)
 [Getting Started](#getting-started)
 [Description](#description)
-[Usages](#usages)
-[Examples](#examples)
 ## Requirements
 ### Technically
     - Python3++
 
 ### Modules
 - numpy
-- pandas
-- nltk
-- pickle
+
+
+## Description
+This is a simple neural network, using currently a feedword layer with a backpropagation. Furthermore, the sigmoid function is as activion implemented. 
+
+The neuralNetwork is basically not developed to solve complex problems, it is just a simple example, how to build a neural network from scratch.
 
 ## Getting Started
-## Description
-## Usages
-### AI for recipes 
-This AI using the neural network to find for a given recipe the ingredients and the preparation. 
-The data is based on a set from [www.chefkoch.de](https://www.chefkoch.de/), which contains ~13.000 recipes with the corresponding preparations and ingredients.
+Create a new instance of Network:
 
-Further options are planned: 
-- ask the AI for ingredients, you want in your meal and they will give you a small result-list with possible recipes, based on the given ingredients
-- if the AI found the recipe, they will be possible to ask you in a context, if you just want the ingredients or the preparations
+```python
+network = Network()
+```
 
-### AI for financial predictions
- **Not in development yet**
-## Examples
+After creating an instance from the network, add a desired number of layers:
+```python
+net.addLayer(ForwardLayer(1, 4))
+net.addLayer(ActivationLayer(tanh, tanh_prime))
+net.addLayer(ForwardLayer(4, 8))
+net.addLayer(ActivationLayer(tanh, tanh_prime))
+net.addLayer(ForwardLayer(8, 1))
+net.addLayer(ActivationLayer(tanh, tanh_prime))
+```
+
+A full example to build a model, you can find in the **neuralNetwork.py-file**
+
+## Coming soon
+This neural network will be extended with time. It should be capable to solve complex problems, using multiple algorithms for deep learning. Also the current available functions can be handle different shapes of arrays. 

@@ -13,11 +13,11 @@ y_train = np.array([[1], [1], [1], [0]])
 
 # network
 net = Network()
-net.addLayer(ForwardLayer(1, 256))
+net.addLayer(ForwardLayer(1, 4))
 net.addLayer(ActivationLayer(tanh, tanh_prime))
-net.addLayer(ForwardLayer(256, 128))
+net.addLayer(ForwardLayer(4, 8))
 net.addLayer(ActivationLayer(tanh, tanh_prime))
-net.addLayer(ForwardLayer(128, 1))
+net.addLayer(ForwardLayer(8, 1))
 net.addLayer(ActivationLayer(tanh, tanh_prime))
 
 #
@@ -25,7 +25,7 @@ net.addLayer(ActivationLayer(tanh, tanh_prime))
 
 # train
 net.useLoss(mse, mse_prime)
-net.fit(x_train, y_train, epochs=1000, learning_rate=0.1)
+net.fit(x_train, y_train, epochs=10, learning_rate=0.1)
 
 # test
 out = net.predict(x_train)
